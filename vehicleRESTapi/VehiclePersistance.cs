@@ -116,10 +116,10 @@ namespace vehicleRESTapi
             MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
 
             mySQLReader = cmd.ExecuteReader();
-            if (mySQLReader.Read()) //If the record exists, continue to delete it
+            if (mySQLReader.Read()) //If the record exists, continue for an update
             {
                 mySQLReader.Close();
-                sqlString = "UPDATE vehicles SET year=" + p.Year + ", make='" + p.Make + "', model='" + p.Model +"'";
+                sqlString = "UPDATE vehicles SET year=" + p.Year + ", make='" + p.Make + "', model='" + p.Model +"' WHERE id = " + ID.ToString();
                 cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
 
                 cmd.ExecuteNonQuery();
