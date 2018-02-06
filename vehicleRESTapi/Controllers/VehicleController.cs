@@ -10,22 +10,16 @@ using vehicleRESTapi.Models;
 
 namespace vehicleRESTapi.Controllers
 {
-    //[RoutePrefix("api/vehicles")]
-    [EnableCors("*","*","*")]
-    [RoutePrefix("api/vehicles")]
+
     public class VehiclesController : ApiController
     {
-        // GET: api/Person
-        //[Route("api/vehicles/"), HttpGet]
-        [Route]
+
         public ArrayList Get()
         {
             return new VehiclePersistance().getAllVehicles();
         }
 
-        // GET: api/Person/5
-        //[Route("api/vehicles/{id:long}"), HttpGet]
-        [Route]
+
         public Vehicle Get(long id)
         {
             VehiclePersistance pp = new VehiclePersistance();
@@ -34,9 +28,7 @@ namespace vehicleRESTapi.Controllers
             return p;
         }
 
-        // POST: api/Person
-        //[Route("api/vehicles/"), HttpPost]
-        [Route]
+
         public HttpResponseMessage Post([FromBody]Vehicle value)
         {
             VehiclePersistance pp = new VehiclePersistance();
@@ -48,9 +40,7 @@ namespace vehicleRESTapi.Controllers
             return response;
         }
 
-        // PUT: api/Person/5
-        //[Route("api/vehicles/{id:long}"), HttpPut]
-        [Route]
+
         public HttpResponseMessage Put([FromUri]long id, [FromBody]Vehicle p)
         {
             VehiclePersistance pp = new VehiclePersistance();
@@ -71,9 +61,6 @@ namespace vehicleRESTapi.Controllers
             return response;
         }
 
-        // DELETE: api/Person/5
-        //[Route("api/vehicles/{id:long}"), HttpDelete]
-        [Route]
         public HttpResponseMessage Delete(long id)
         {
             VehiclePersistance pp = new VehiclePersistance();
