@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using vehicleRESTapi.Models;
@@ -9,40 +10,43 @@ namespace vehicleRESTapi
 {
     public class VehiclePersistance
     {
-        private MySql.Data.MySqlClient.MySqlConnection conn;
+        private SqlConnection sql_conn;
 
         public VehiclePersistance()
         {
-            string myConnectionString = "server=127.0.0.1;uid=root;pwd=515764;database=mitchell_vehicles";
+            //string myConnectionString = "server=127.0.0.1;uid=root;pwd=515764;database=mitchell_vehicles";
+            string sqlConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\kbq19\Documents\VehicleCrud\vehicleRESTapi\App_Data\mitchell_vehicles.mdf;Integrated Security=True";
+            sql_conn = new SqlConnection(sqlConnectionString);
+            sql_conn.Open();
+            //try
+            //{
+            //    conn = new MySql.Data.MySqlClient.MySqlConnection();
+            //    conn.ConnectionString = myConnectionString;
+            //    conn.Open();
+            //}
+            //catch (MySql.Data.MySqlClient.MySqlException ex)
+            //{
 
-            try
-            {
-                conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = myConnectionString;
-                conn.Open();
-            }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-
-            }
+            //}
         }
 
-        public long saveVehicle(Vehicle p)
+        public int saveVehicle(Vehicle p)
         {
-            string sqlString = "INSERT INTO vehicles (year, make, model) VALUES (" + p.Year + ",'" + p.Make + "','" + p.Model + "')";
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+            string sqlString = "INSERT INTO vehicles (year, make, model) VALUES ("+ p.Year + ",'" + p.Make + "','" + p.Model + "');" +
+                "SELECT id AS LastID FROM vehicles WHERE id = @@Identity;";
+            SqlCommand cmd = new SqlCommand(sqlString, sql_conn);
             cmd.ExecuteNonQuery();
-            long id = cmd.LastInsertedId;
+            int id = (int)cmd.ExecuteScalar();
             return id;
         }
 
         public ArrayList getAllVehicles()
         {
             ArrayList personArray = new ArrayList();
-            MySql.Data.MySqlClient.MySqlDataReader mySQLReader = null;
+            SqlDataReader mySQLReader = null;
 
             String sqlString = "SELECT * FROM vehicles";
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+            SqlCommand cmd = new SqlCommand(sqlString, sql_conn);
 
             mySQLReader = cmd.ExecuteReader();
             while (mySQLReader.Read()) //If we got back the data then get the first column that came back
@@ -60,10 +64,10 @@ namespace vehicleRESTapi
         public Vehicle getVehicle(long ID)
         {
             Vehicle p = new Vehicle();
-            MySql.Data.MySqlClient.MySqlDataReader mySQLReader = null;
+            SqlDataReader mySQLReader = null;
 
             String sqlString = "SELECT * FROM vehicles WHERE ID = " + ID.ToString();
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+            SqlCommand cmd = new SqlCommand(sqlString, sql_conn);
 
             mySQLReader = cmd.ExecuteReader();
             if (mySQLReader.Read()) //If we got back the data then get the first column that came back
@@ -86,17 +90,17 @@ namespace vehicleRESTapi
         public bool deleteVehicle(long ID)
         {
             Vehicle p = new Vehicle();
-            MySql.Data.MySqlClient.MySqlDataReader mySQLReader = null;
+            SqlDataReader mySQLReader = null;
 
             String sqlString = "SELECT * FROM vehicles WHERE ID = " + ID.ToString();
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+            SqlCommand cmd = new SqlCommand(sqlString, sql_conn);
 
             mySQLReader = cmd.ExecuteReader();
             if (mySQLReader.Read()) //If the record exists, continue to delete it
             {
                 mySQLReader.Close();
                 sqlString = "DELETE FROM vehicles WHERE ID = " + ID.ToString();
-                cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                cmd = new SqlCommand(sqlString, sql_conn);
 
                 cmd.ExecuteNonQuery();
                 return true;
@@ -109,18 +113,18 @@ namespace vehicleRESTapi
 
         public bool updateVehicle(long ID, Vehicle p)
         {
-            MySql.Data.MySqlClient.MySqlDataReader mySQLReader = null;
+            SqlDataReader mySQLReader = null;
 
             String sqlString = "SELECT * FROM vehicles WHERE ID = " + ID.ToString();
 
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+            SqlCommand cmd = new SqlCommand(sqlString, sql_conn);
 
             mySQLReader = cmd.ExecuteReader();
             if (mySQLReader.Read()) //If the record exists, continue for an update
             {
                 mySQLReader.Close();
                 sqlString = "UPDATE vehicles SET year=" + p.Year + ", make='" + p.Make + "', model='" + p.Model +"' WHERE id = " + ID.ToString();
-                cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                cmd = new SqlCommand(sqlString, sql_conn);
 
                 cmd.ExecuteNonQuery();
                 return true;
