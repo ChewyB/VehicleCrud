@@ -15,8 +15,14 @@ namespace vehicleRESTapi
             //var json = config.Formatters.JsonFormatter;
             //json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
             //config.Formatters.Remove(config.Formatters.XmlFormatter);
+
+
+
             // Web API routes
-            config.MapHttpAttributeRoutes();
+            //config.MapHttpAttributeRoutes();
+
+            EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "GET,POST,PUT,DELETE,OPTIONS,DEBUG");
+            config.EnableCors(cors);
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
@@ -24,8 +30,8 @@ namespace vehicleRESTapi
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "GET,POST,PUT,DELETE,OPTIONS,DEBUG");
-            config.EnableCors(cors);
+            //EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "GET,POST,PUT,DELETE,OPTIONS,DEBUG");
+            //config.EnableCors(cors);
         }
     }
 }

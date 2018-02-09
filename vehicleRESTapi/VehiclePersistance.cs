@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using vehicleRESTapi.Models;
@@ -15,9 +16,8 @@ namespace vehicleRESTapi
         public VehiclePersistance()
         {
             //string myConnectionString = "server=127.0.0.1;uid=root;pwd=515764;database=mitchell_vehicles";
-            string sqlConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\kbq19\Documents\VehicleCrud\vehicleRESTapi\App_Data\mitchell_vehicles.mdf;Integrated Security=True";
-            sql_conn = new SqlConnection(sqlConnectionString);
-            sql_conn.Open();
+            string sqlConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\mitchell_vehicles.mdf;Integrated Security=True"; //C:\Users\kbq19\Documents\VehicleCrud\vehicleRESTapi\App_Data
+
             try
             {
                 sql_conn = new SqlConnection(sqlConnectionString);
@@ -61,7 +61,7 @@ namespace vehicleRESTapi
             return personArray;
         }
 
-        public Vehicle getVehicle(long ID)
+        public Vehicle getVehicle(int ID)
         {
             Vehicle p = new Vehicle();
             SqlDataReader mySQLReader = null;
@@ -87,7 +87,7 @@ namespace vehicleRESTapi
             }
         }
 
-        public bool deleteVehicle(long ID)
+        public bool deleteVehicle(int ID)
         {
             Vehicle p = new Vehicle();
             SqlDataReader mySQLReader = null;
@@ -111,7 +111,7 @@ namespace vehicleRESTapi
             }
         }
 
-        public bool updateVehicle(long ID, Vehicle p)
+        public bool updateVehicle(int ID, Vehicle p)
         {
             SqlDataReader mySQLReader = null;
 

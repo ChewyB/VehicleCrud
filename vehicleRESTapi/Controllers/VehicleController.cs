@@ -10,7 +10,7 @@ using vehicleRESTapi.Models;
 
 namespace vehicleRESTapi.Controllers
 {
-
+    
     public class VehiclesController : ApiController
     {
 
@@ -20,7 +20,7 @@ namespace vehicleRESTapi.Controllers
         }
 
 
-        public Vehicle Get(long id)
+        public Vehicle Get(int id)
         {
             VehiclePersistance pp = new VehiclePersistance();
             Vehicle p = pp.getVehicle(id);
@@ -40,14 +40,18 @@ namespace vehicleRESTapi.Controllers
             return response;
         }
 
-
-        public HttpResponseMessage Put([FromUri]long id, [FromBody]Vehicle p)
+        [HttpPatch]
+        [HttpPut]
+        public HttpResponseMessage Put([FromUri]int id, [FromBody]Vehicle p)
         {
             VehiclePersistance pp = new VehiclePersistance();
             bool recordExisted = false;
             recordExisted = pp.updateVehicle(id, p);
 
-            HttpResponseMessage response;
+            HttpResponseMessage response;//= Request.CreateResponse(HttpStatusCode.Created);
+            //response.Headers.Location = new Uri(Request.RequestUri, String.Format("vehicles/{0}", id));
+
+            
 
             if (recordExisted)
             {
@@ -61,7 +65,8 @@ namespace vehicleRESTapi.Controllers
             return response;
         }
 
-        public HttpResponseMessage Delete(long id)
+
+        public HttpResponseMessage Delete(int id)
         {
             VehiclePersistance pp = new VehiclePersistance();
             bool recordExisted = false;
@@ -81,13 +86,13 @@ namespace vehicleRESTapi.Controllers
             return response;
         }
 
-        //public HttpResponseMessage Options()
-        //{
-        //    var response = new HttpResponseMessage
-        //    {
-        //        StatusCode = HttpStatusCode.OK
-        //    };
-        //    return response;
-        //}
+        public HttpResponseMessage Options()
+        {
+            var response = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK
+            };
+            return response;
+        }
     }
 }
