@@ -18,25 +18,25 @@ namespace vehicleRESTapi
             string sqlConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\kbq19\Documents\VehicleCrud\vehicleRESTapi\App_Data\mitchell_vehicles.mdf;Integrated Security=True";
             sql_conn = new SqlConnection(sqlConnectionString);
             sql_conn.Open();
-            //try
-            //{
-            //    conn = new MySql.Data.MySqlClient.MySqlConnection();
-            //    conn.ConnectionString = myConnectionString;
-            //    conn.Open();
-            //}
-            //catch (MySql.Data.MySqlClient.MySqlException ex)
-            //{
-
-            //}
+            try
+            {
+                sql_conn = new SqlConnection(sqlConnectionString);
+                sql_conn.Open();
+            }
+            catch (SqlException ex)
+            {
+                new SystemException(ex.Message);
+            }
         }
 
         public int saveVehicle(Vehicle p)
         {
-            string sqlString = "INSERT INTO vehicles (year, make, model) VALUES ("+ p.Year + ",'" + p.Make + "','" + p.Model + "');" +
-                "SELECT id AS LastID FROM vehicles WHERE id = @@Identity;";
+            string returnID = "SELECT id as ID_UNIQUE FROM vehicles WHERE id = @@Identity;";
+            string sqlString = "INSERT INTO vehicles (year, make, model) VALUES (" + p.Year + ",'" + p.Make + "','" + p.Model + "');" + returnID;
             SqlCommand cmd = new SqlCommand(sqlString, sql_conn);
-            cmd.ExecuteNonQuery();
-            int id = (int)cmd.ExecuteScalar();
+
+            int id = Convert.ToInt32(cmd.ExecuteScalar());
+
             return id;
         }
 
@@ -66,7 +66,7 @@ namespace vehicleRESTapi
             Vehicle p = new Vehicle();
             SqlDataReader mySQLReader = null;
 
-            String sqlString = "SELECT * FROM vehicles WHERE ID = " + ID.ToString();
+            String sqlString = "SELECT * FROM vehicles WHERE id = " + ID.ToString();
             SqlCommand cmd = new SqlCommand(sqlString, sql_conn);
 
             mySQLReader = cmd.ExecuteReader();

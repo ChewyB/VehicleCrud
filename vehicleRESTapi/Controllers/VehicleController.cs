@@ -32,7 +32,7 @@ namespace vehicleRESTapi.Controllers
         public HttpResponseMessage Post([FromBody]Vehicle value)
         {
             VehiclePersistance pp = new VehiclePersistance();
-            long id;
+            int id;
             id = pp.saveVehicle(value);
             value.Id = id;
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
