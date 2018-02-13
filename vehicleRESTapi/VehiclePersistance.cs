@@ -15,7 +15,6 @@ namespace vehicleRESTapi
 
         public VehiclePersistance()
         {
-            //string myConnectionString = "server=127.0.0.1;uid=root;pwd=515764;database=mitchell_vehicles";
             string sqlConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\mitchell_vehicles.mdf;Integrated Security=True"; //C:\Users\kbq19\Documents\VehicleCrud\vehicleRESTapi\App_Data
 
             try
@@ -29,7 +28,7 @@ namespace vehicleRESTapi
             }
         }
 
-        public int saveVehicle(Vehicle p)
+        public int SaveVehicle(Vehicle p)
         {
             string returnID = "SELECT id as ID_UNIQUE FROM vehicles WHERE id = @@Identity;";
             string sqlString = "INSERT INTO vehicles (year, make, model) VALUES (" + p.Year + ",'" + p.Make + "','" + p.Model + "');" + returnID;
@@ -40,7 +39,7 @@ namespace vehicleRESTapi
             return id;
         }
 
-        public ArrayList getAllVehicles()
+        public ArrayList GetAllVehicles()
         {
             ArrayList personArray = new ArrayList();
             SqlDataReader mySQLReader = null;
@@ -61,7 +60,7 @@ namespace vehicleRESTapi
             return personArray;
         }
 
-        public Vehicle getVehicle(int ID)
+        public Vehicle GetVehicle(int ID)
         {
             Vehicle p = new Vehicle();
             SqlDataReader mySQLReader = null;
@@ -87,7 +86,7 @@ namespace vehicleRESTapi
             }
         }
 
-        public bool deleteVehicle(int ID)
+        public bool DeleteVehicle(int ID)
         {
             Vehicle p = new Vehicle();
             SqlDataReader mySQLReader = null;
@@ -111,7 +110,7 @@ namespace vehicleRESTapi
             }
         }
 
-        public bool updateVehicle(int ID, Vehicle p)
+        public bool UpdateVehicle(int ID, Vehicle p)
         {
             SqlDataReader mySQLReader = null;
 

@@ -10,49 +10,43 @@ using vehicleRESTapi.Models;
 
 namespace vehicleRESTapi.Controllers
 {
-    
+
     public class VehiclesController : ApiController
     {
-
         public ArrayList Get()
         {
-            return new VehiclePersistance().getAllVehicles();
+            return new VehiclePersistance().GetAllVehicles();
         }
-
 
         public Vehicle Get(int id)
         {
             VehiclePersistance pp = new VehiclePersistance();
-            Vehicle p = pp.getVehicle(id);
-
+            Vehicle p = pp.GetVehicle(id);
             return p;
         }
+
 
 
         public HttpResponseMessage Post([FromBody]Vehicle value)
         {
             VehiclePersistance pp = new VehiclePersistance();
             int id;
-            id = pp.saveVehicle(value);
+            id = pp.SaveVehicle(value);
             value.Id = id;
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
             response.Headers.Location = new Uri(Request.RequestUri, String.Format("vehicles/{0}", id));
             return response;
         }
 
-        [HttpPatch]
-        [HttpPut]
-        public HttpResponseMessage Put([FromUri]int id, [FromBody]Vehicle p)
+
+
+        public HttpResponseMessage Put(int id, [FromBody]Vehicle p)
         {
             VehiclePersistance pp = new VehiclePersistance();
             bool recordExisted = false;
-            recordExisted = pp.updateVehicle(id, p);
+            recordExisted = pp.UpdateVehicle(id, p);
 
-            HttpResponseMessage response;//= Request.CreateResponse(HttpStatusCode.Created);
-            //response.Headers.Location = new Uri(Request.RequestUri, String.Format("vehicles/{0}", id));
-
-            
-
+            HttpResponseMessage response;
             if (recordExisted)
             {
                 //Send a response code
@@ -62,6 +56,7 @@ namespace vehicleRESTapi.Controllers
             {
                 response = Request.CreateResponse(HttpStatusCode.NotFound);
             }
+
             return response;
         }
 
@@ -70,7 +65,7 @@ namespace vehicleRESTapi.Controllers
         {
             VehiclePersistance pp = new VehiclePersistance();
             bool recordExisted = false;
-            recordExisted = pp.deleteVehicle(id);
+            recordExisted = pp.DeleteVehicle(id);
 
             HttpResponseMessage response;
 
@@ -86,8 +81,10 @@ namespace vehicleRESTapi.Controllers
             return response;
         }
 
+
         public HttpResponseMessage Options()
         {
+         
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK
