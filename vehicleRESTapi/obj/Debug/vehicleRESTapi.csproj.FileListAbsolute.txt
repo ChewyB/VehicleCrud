@@ -81,6 +81,5 @@ C:\Users\jb106327\Documents\GIT\VehicleCrud\vehicleRESTapi\bin\System.Web.WebPag
 C:\Users\jb106327\Documents\GIT\VehicleCrud\vehicleRESTapi\bin\System.Web.WebPages.Deployment.xml
 C:\Users\jb106327\Documents\GIT\VehicleCrud\vehicleRESTapi\bin\System.Web.WebPages.Razor.xml
 C:\Users\jb106327\Documents\GIT\VehicleCrud\vehicleRESTapi\bin\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
-C:\Users\jb106327\Documents\GIT\VehicleCrud\vehicleRESTapi\obj\Debug\vehicleRESTapi.csprojResolveAssemblyReference.cache
 C:\Users\jb106327\Documents\GIT\VehicleCrud\vehicleRESTapi\obj\Debug\vehicleRESTapi.dll
 C:\Users\jb106327\Documents\GIT\VehicleCrud\vehicleRESTapi\obj\Debug\vehicleRESTapi.pdb

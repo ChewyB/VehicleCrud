@@ -34,9 +34,9 @@ namespace ApiTest
         {
             Vehicle prius = new Vehicle
             {
-                Id = 1,
-                Make = "Toyota",
-                Model = "Prius",
+                Id = 60,
+                Make = "Honda",
+                Model = "Civic",
                 Year = 1900
             };
 
