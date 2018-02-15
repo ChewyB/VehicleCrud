@@ -13,12 +13,21 @@ namespace vehicleRESTapi.Controllers
 
     public class VehiclesController : ApiController
     {
-        public ArrayList Get()
+        /// <summary>
+        /// Get All Vehicles
+        /// </summary>
+        /// <returns></returns>
+        public ArrayList GetAllVehicles()
         {
             return new VehiclePersistance().GetAllVehicles();
         }
 
-        public Vehicle Get(int id)
+        /// <summary>
+        /// Get all Vehicles by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Vehicle GetVehicleById(int id)
         {
             VehiclePersistance pp = new VehiclePersistance();
             Vehicle p = pp.GetVehicle(id);
@@ -26,18 +35,37 @@ namespace vehicleRESTapi.Controllers
         }
 
 
-
-        public HttpResponseMessage Post([FromBody]Vehicle value)
+        /// <summary>
+        /// Save the vehicle to the database
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public HttpResponseMessage Post_Save_Vehicle([FromBody]Vehicle v)
         {
             VehiclePersistance pp = new VehiclePersistance();
+            HttpResponseMessage response;
             int id;
-            id = pp.SaveVehicle(value);
-            value.Id = id;
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+            id = pp.SaveVehicle(v);
+
+            if(id == -1)
+            {
+                response = Request.CreateResponse(HttpStatusCode.NotAcceptable);
+                return response;
+            }
+
+            v.Id = id;
+            response = Request.CreateResponse(HttpStatusCode.Created);
             response.Headers.Location = new Uri(Request.RequestUri, String.Format("/{0}", id));
             return response;
         }
 
+
+        /// <summary>
+        /// Update a vehicle by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
         [HttpPatch]
         [HttpPut]
         public HttpResponseMessage PUT(int id, [FromBody]Vehicle p)
@@ -63,8 +91,12 @@ namespace vehicleRESTapi.Controllers
             return response;
         }
 
-
-        public HttpResponseMessage Delete(int id)
+        /// <summary>
+        /// Delete a vehicle by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public HttpResponseMessage DeleteVehicle(int id)
         {
             VehiclePersistance pp = new VehiclePersistance();
             bool recordExisted = false;

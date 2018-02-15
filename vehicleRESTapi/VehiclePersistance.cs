@@ -28,10 +28,16 @@ namespace vehicleRESTapi
             }
         }
 
-        public int SaveVehicle(Vehicle p)
+        public int SaveVehicle(Vehicle vehicleToSave)
         {
+            if(vehicleToSave.Year > 2050 || vehicleToSave.Year < 1950
+               || vehicleToSave.Model=="" || vehicleToSave.Make=="")
+            {
+                return -1;
+            }
+
             string returnID = "SELECT id as ID_UNIQUE FROM vehicles WHERE id = @@Identity;";
-            string sqlString = "INSERT INTO vehicles (year, make, model) VALUES (" + p.Year + ",'" + p.Make + "','" + p.Model + "');" + returnID;
+            string sqlString = "INSERT INTO vehicles (year, make, model) VALUES (" + vehicleToSave.Year + ",'" + vehicleToSave.Make + "','" + vehicleToSave.Model + "');" + returnID;
             SqlCommand cmd = new SqlCommand(sqlString, sql_conn);
 
             int id = Convert.ToInt32(cmd.ExecuteScalar());

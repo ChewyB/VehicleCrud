@@ -32,19 +32,17 @@ namespace ApiTest
         [TestMethod]
         public void Test_IncorrectDelete()
         {
-            using (WebClient client = new WebClient())
+            Vehicle prius = new Vehicle
             {
-                try
-                {
-                    client.UploadValues("http://localhost:44391/api/vehicles/58", "DELETE", new NameValueCollection());
-                }
-                catch (WebException e)
-                {
-                    Assert.IsTrue(true);
-                }
-            }
-        }
+                Id = 1,
+                Make = "Toyota",
+                Model = "Prius",
+                Year = 1900
+            };
 
+            var vp = new VehiclePersistance();
+            vp.SaveVehicle(prius);
+        }
 
     }
 }
