@@ -40,7 +40,7 @@ namespace ApiTest
                 Year = 1900
             };
 
-            var vp = new VehiclePersistance();
+            var vp = new VehicleActions();
             vp.SaveVehicle(prius);
         }
 

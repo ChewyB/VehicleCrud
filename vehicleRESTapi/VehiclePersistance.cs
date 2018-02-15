@@ -9,11 +9,14 @@ using vehicleRESTapi.Models;
 
 namespace vehicleRESTapi
 {
-    public class VehiclePersistance
+    public class VehicleActions
     {
         private SqlConnection sql_conn;
 
-        public VehiclePersistance()
+        /// <summary>
+        /// Creates a connection to the database every time we create/call a new vehicle action
+        /// </summary>
+        public VehicleActions()
         {
             string sqlConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\mitchell_vehicles.mdf;Integrated Security=True"; //C:\Users\kbq19\Documents\VehicleCrud\vehicleRESTapi\App_Data
 
@@ -28,8 +31,14 @@ namespace vehicleRESTapi
             }
         }
 
+        /// <summary>
+        /// Saves the vehicle to the databse using POST action
+        /// </summary>
+        /// <param name="vehicleToSave"></param>
+        /// <returns></returns>
         public int SaveVehicle(Vehicle vehicleToSave)
         {
+            //Check that the values from the request are acceptable
             if(vehicleToSave.Year > 2050 || vehicleToSave.Year < 1950
                || vehicleToSave.Model=="" || vehicleToSave.Make=="")
             {
@@ -45,6 +54,10 @@ namespace vehicleRESTapi
             return id;
         }
 
+        /// <summary>
+        /// Get all vehicles inserted into the table by ready all rows from the database
+        /// </summary>
+        /// <returns></returns>
         public ArrayList GetAllVehicles()
         {
             ArrayList personArray = new ArrayList();
@@ -54,7 +67,7 @@ namespace vehicleRESTapi
             SqlCommand cmd = new SqlCommand(sqlString, sql_conn);
 
             mySQLReader = cmd.ExecuteReader();
-            while (mySQLReader.Read()) //If we got back the data then get the first column that came back
+            while (mySQLReader.Read())
             {
                 Vehicle p = new Vehicle();
                 p.Id = mySQLReader.GetInt32(0);
@@ -66,6 +79,11 @@ namespace vehicleRESTapi
             return personArray;
         }
 
+        /// <summary>
+        /// Get the vehicle by ID by checking the records exists and then extract all the information from the database (id, year, make, model)
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public Vehicle GetVehicle(int ID)
         {
             Vehicle p = new Vehicle();
@@ -92,6 +110,11 @@ namespace vehicleRESTapi
             }
         }
 
+        /// <summary>
+        /// Check if the records exists before executing the delete query
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public bool DeleteVehicle(int ID)
         {
             Vehicle p = new Vehicle();
@@ -116,11 +139,17 @@ namespace vehicleRESTapi
             }
         }
 
+        /// <summary>
+        /// Check that the record actually exists before executing the update query
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public bool UpdateVehicle(int ID, Vehicle p)
         {
             SqlDataReader mySQLReader = null;
 
-            String sqlString = "SELECT * FROM vehicles WHERE ID = " + ID.ToString();
+            string sqlString = "SELECT * FROM vehicles WHERE ID = " + ID.ToString();
 
             SqlCommand cmd = new SqlCommand(sqlString, sql_conn);
 
